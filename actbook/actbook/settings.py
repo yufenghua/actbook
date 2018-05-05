@@ -25,7 +25,7 @@ SECRET_KEY = 'o2era(r4+#k9&768r1-)d_3xbjfw#w_t7cc%!*v^aw^fjbxktu'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [198.13.43.140]
+ALLOWED_HOSTS = ['198.13.43.140']
 
 
 # Application definition
