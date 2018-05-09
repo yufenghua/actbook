@@ -5,5 +5,9 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.http import HttpResponse
+from exportToexcel import *
+
 def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+    return HttpResponse("<a href='toexcel'>粗暴的下载账单吧</a>")
+def downloadExcel(request):
+	return exportToExcel()

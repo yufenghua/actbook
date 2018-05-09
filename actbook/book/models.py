@@ -37,6 +37,17 @@ class BookItem(models.Model):
 	memo=models.CharField(max_length=256)
 	def __str__(self):
 		return self.memo
+	def toJson(self):
+		js={}
+		js['time']=self.time
+		js['type']=self.type
+		js['subtype']=self.subtype
+		js['inout']=self.inout
+		js['money']=self.money
+		js['memo']=self.memo
+		return js
+
+
 
 
 
