@@ -14,7 +14,7 @@ def exportToExcel():
 		json=item.toJson()
 		ws.append([json['time'].date().isoformat(),json['time'].strftime('%H:%M'),json['inout'],json['type'].name,json['subtype'].name,json['money'],json['memo']])
 	response = HttpResponse(content=save_virtual_workbook(wb), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
-	response['Content-Disposition'] = 'attachment; filename=myexport.xlsx'
+	response['Content-Disposition'] = 'attachment; filename'+date.today().isoformat()+'.xlsx'
 	return response
 
 	
