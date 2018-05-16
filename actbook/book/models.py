@@ -36,7 +36,7 @@ class BookItem(models.Model):
 	money=models.DecimalField(max_digits=8, decimal_places=2)
 	memo=models.CharField(max_length=256)
 	def __str__(self):
-		return self.memo
+		return self.time.date().isoformat()+' '+self.memo+':'+str(self.money)
 	def toJson(self):
 		js={}
 		js['time']=self.time
