@@ -46,6 +46,8 @@ class BookItem(models.Model):
 		js['money']=self.money
 		js['memo']=self.memo
 		return js
+	def getDate(self):
+		return self.time.date().isoformat()
 
 
 
