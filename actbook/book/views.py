@@ -7,7 +7,7 @@ from django.template import loader
 # Create your views here.
 from django.http import HttpResponse
 from exportToexcel import *
-from .models import BookItem
+from .models import *
 
 def index(request):
 	book_items=BookItem.objects.order_by('-time')
@@ -16,3 +16,6 @@ def index(request):
 	return HttpResponse(template.render(context, request))
 def downloadExcel(request):
 	return exportToExcel()
+
+def getSearchParam(request):
+	pass

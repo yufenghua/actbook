@@ -8,36 +8,69 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+    <title>账务总览</title>
   </head>
   <body>
-    {% if items %}
-    <table class="table">
-    <thead>
-    <tr>
-      <th scope="col">日期</th>
-      <th scope="col">金额</th>
-      <th scope="col">大类</th>
-      <th scope="col">小类</th>
-      <th scope="col">备注</th>
-    </tr>
-  </thead>
-   <tbody>
-    {% for item in items %}
-        <tr>
-        <th scope="row">{{ item.getDate }}</th>
-      <td>{{ item.money }}</td>
-      <td>{{ item.type.name }}</td>
-      <td>{{ item.subtype.name }}</td>
-      <td>{{ item.memo }}</td>
-    </tr>
-    {% endfor %}
-    </tbody>
-</table>
-	{% else %}
-	    <p>No polls are available.</p>
-	{% endif %}
-	<div><a href='toexcel'>下载账单</a></div>
+    <div class="container">
+      <div>
+        <form class="form-inline">
+          <label class="my-1 mr-2" for="inlineFormCustomSelectPref">月份</label>
+          <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+            <option selected>Choose...</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+          <label class="my-1 mr-2" for="inlineFormCustomSelectPref">大类</label>
+          <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+            <option selected>Choose...</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+          <label class="my-1 mr-2" for="inlineFormCustomSelectPref">小类</label>
+          <select class="custom-select my-1 mr-sm-2" id="inlineFormCustomSelectPref">
+            <option selected>Choose...</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+          <button type="submit" class="btn btn-primary my-1">Submit</button>
+        </form>
+      </div>
+      <div class="container">
+        {% if items %}
+        <table class="table">
+          <thead>
+          <tr>
+            <th scope="col">日期</th>
+            <th scope="col">金额</th>
+            <th scope="col">大类</th>
+            <th scope="col">小类</th>
+            <th scope="col">备注</th>
+          </tr>
+        </thead>
+         <tbody>
+          {% for item in items %}
+              <tr>
+              <th scope="row">{{ item.getDate }}</th>
+            <td>{{ item.money }}</td>
+            <td>{{ item.type.name }}</td>
+            <td>{{ item.subtype.name }}</td>
+            <td>{{ item.memo }}</td>
+          </tr>
+          {% endfor %}
+          </tbody>
+      </table>
+        {% else %}
+            <p>No polls are available.</p>
+        {% endif %}
+        
+      </div>
+
+    <div class="container"><a href='toexcel'>下载账单</a></div>
+    </div>
+  
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
