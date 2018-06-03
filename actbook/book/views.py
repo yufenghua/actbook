@@ -6,6 +6,8 @@ from django.template import loader
 from openpyxl import Workbook
 from django.http import HttpResponse
 from openpyxl.writer.excel import save_virtual_workbook 
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
 
 # Create your views here.
 from exportToexcel import *
@@ -13,6 +15,8 @@ from .models import *
 from datetime import *
 
 def index(request):
+	if not request.user.is_authenticated:
+		return HttpResponseRedirect(reverse('admin:index'))
 	print request.POST
 	reqmonth=request.POST.get('month')
 	reqbooktype=request.POST.get('booktype')
@@ -26,7 +30,7 @@ def index(request):
 	if not nvlcheck(reqbooktype):
 		context['reqbooktype']=int(reqbooktype)
 	return HttpResponse(template.render(context, request))
-	
+
 def downloadExcel(request):
 	wb = Workbook()
 	ws = wb.active
