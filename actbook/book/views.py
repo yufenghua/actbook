@@ -3,9 +3,11 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from django.template import loader
+from openpyxl import Workbook
+from django.http import HttpResponse
+from openpyxl.writer.excel import save_virtual_workbook 
 
 # Create your views here.
-from django.http import HttpResponse
 from exportToexcel import *
 from .models import *
 from datetime import *
@@ -24,8 +26,20 @@ def index(request):
 	if not nvlcheck(reqbooktype):
 		context['reqbooktype']=int(reqbooktype)
 	return HttpResponse(template.render(context, request))
+	
 def downloadExcel(request):
-	return exportToExcel()
+	wb = Workbook()
+	ws = wb.active
+	ws.append(["日期","时间","账务类型","类型", "详细类型", "金额","备注"])
+	reqmonth=request.GET.get('month')
+	reqbooktype=request.GET.get('booktype')
+	allObj=getItems(reqmonth,reqbooktype)
+	for item in allObj:
+		json=item.toJson()
+		ws.append([json['time'].date().isoformat(),json['time'].strftime('%H:%M'),json['inout'],json['type'].name,json['subtype'].name,json['money'],json['memo']])
+	response = HttpResponse(content=save_virtual_workbook(wb), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+	response['Content-Disposition'] = 'attachment; filename'+date.today().isoformat()+'.xlsx'
+	return response
 
 def getSearchParam(request):
 	pass
