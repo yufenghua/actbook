@@ -45,6 +45,14 @@ def downloadExcel(request):
 	response['Content-Disposition'] = 'attachment; filename'+date.today().isoformat()+'.xlsx'
 	return response
 
+def add(request):
+	if not request.user.is_authenticated:
+		return HttpResponseRedirect(reverse('admin:index'))
+	template = loader.get_template('book/addedit.html')
+	context = {}
+	return HttpResponse(template.render(context, request))
+
+
 def getSearchParam(request):
 	pass
 
