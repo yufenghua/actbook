@@ -48,6 +48,12 @@ class BookItem(models.Model):
 		return js
 	def getDate(self):
 		return self.time.date().isoformat()
+	def save(self, *args, **kwargs):
+		if (self.subtype.type.id!=self.type.id):
+			raise Exception('subtype and type not match')
+
+		super(BookItem, self).save(*args, **kwargs) 
+
 
 
 
