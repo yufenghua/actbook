@@ -51,6 +51,7 @@
             <th scope="col">金额</th>
             <th scope="col">大类</th>
             <th scope="col">小类</th>
+            <th scope="col">操作</th>
             <th scope="col">备注</th>
           </tr>
         </thead>
@@ -61,6 +62,7 @@
             <td>{{ item.money }}</td>
             <td>{{ item.type.name }}</td>
             <td>{{ item.subtype.name }}</td>
+             <td><a href='/admin/book/bookitem/{{ item.id }}/change/'>编辑</a></td>
             <td>{{ item.memo }}</td>
           </tr>
           {% endfor %}
