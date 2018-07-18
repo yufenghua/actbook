@@ -58,6 +58,8 @@ def getMonthList():
 		monthbegin=date(previous_month.year,previous_month.month,1)
 	return monthlist
 def getItems(reqmonth,reqbooktype):
+	print reqmonth
+	print reqbooktype
 	if nvlcheck(reqmonth)  and nvlcheck(reqbooktype):
 		return BookItem.objects.all().order_by('-time')
 	if nvlcheck(reqmonth):
