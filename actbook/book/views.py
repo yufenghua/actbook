@@ -13,11 +13,11 @@ from django.core.urlresolvers import reverse
 from exportToexcel import *
 from .models import *
 from datetime import *
+from django.db.models import Sum
 
 def index(request):
 	if not request.user.is_authenticated:
 		return HttpResponseRedirect(reverse('admin:index'))
-	print request.POST
 	reqmonth=request.POST.get('month')
 	reqbooktype=request.POST.get('booktype')
 	print str(reqmonth)+str(reqbooktype)
@@ -45,9 +45,52 @@ def downloadExcel(request):
 	response['Content-Disposition'] = 'attachment; filename='+date.today().isoformat()+'.xlsx'
 	return response
 
-def getSearchParam(request):
-	pass
+def subTypeaggr(request):
+	reqmonth,reqbooktype=getSearchParam(request)
+	print reqmonth
+	if nvlcheck(reqmonth):
+		reqmonth=getCurrentMonth()
 
+	subtype_list=getItems(reqmonth,reqbooktype).values('subtype').annotate(moneyTotal=Sum('money'))
+	result_list=[]
+	for item in subtype_list:
+		subtype=BookSubType.objects.get(id=item['subtype'])
+		result_list.append({'subid':item['subtype'],'subname':subtype.name,'typename':subtype.type.name,'money':item['moneyTotal']})
+	template = loader.get_template('book/subTypeaggr.html')
+	booktype=BookType.objects.all()
+	context = {'items':result_list,"booktype":booktype,"months":getMonthList()}
+	if not nvlcheck(reqmonth):
+		context['reqmonth']=reqmonth
+	if not nvlcheck(reqbooktype):
+		context['reqbooktype']=int(reqbooktype)
+	return HttpResponse(template.render(context, request))
+
+def downloadSubtype(request):
+	wb = Workbook()
+	ws = wb.active
+	ws.append(["月份","大类","小类","金额"])
+	reqmonth=request.GET.get('month')
+	reqbooktype=request.GET.get('booktype')
+	if nvlcheck(reqmonth):
+		reqmonth=getCurrentMonth()
+	subtype_list=getItems(reqmonth,reqbooktype).values('subtype').annotate(moneyTotal=Sum('money'))
+	for item in subtype_list:
+		subtype=BookSubType.objects.get(id=item['subtype'])
+		ws.append([reqmonth,subtype.type.name,subtype.name,item['moneyTotal']])
+	response = HttpResponse(content=save_virtual_workbook(wb), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+	response['Content-Disposition'] = 'attachment; filename=subtype'+date.today().isoformat()+'.xlsx'
+	return response
+
+
+def getSearchParam(request):
+	reqmonth=request.POST.get('month')
+	reqbooktype=request.POST.get('booktype')
+	return (reqmonth,reqbooktype)
+
+def getCurrentMonth():
+	td=date.today()
+	monthbegin=date(td.year,td.month,1)
+	return monthbegin.strftime('%Y%m')
 def getMonthList():
 	td=date.today()
 	monthbegin=date(td.year,td.month,1)
@@ -58,8 +101,6 @@ def getMonthList():
 		monthbegin=date(previous_month.year,previous_month.month,1)
 	return monthlist
 def getItems(reqmonth,reqbooktype):
-	print reqmonth
-	print reqbooktype
 	if nvlcheck(reqmonth)  and nvlcheck(reqbooktype):
 		return BookItem.objects.all().order_by('-time')
 	if nvlcheck(reqmonth):
