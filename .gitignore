@@ -109,3 +109,4 @@ ENV/
 
 
 *.sqlite3
+actbook/datadump.json
