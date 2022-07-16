@@ -20,7 +20,7 @@ def index(request):
 		return HttpResponseRedirect(reverse('admin:index'))
 	reqmonth=request.POST.get('month')
 	reqbooktype=request.POST.get('booktype')
-	print str(reqmonth)+str(reqbooktype)
+	#print str(reqmonth)+str(reqbooktype)
 	book_items=getItems(reqmonth,reqbooktype)
 	booktype=BookType.objects.all()
 	template = loader.get_template('book/index.html')
@@ -47,7 +47,7 @@ def downloadExcel(request):
 
 def subTypeaggr(request):
 	reqmonth,reqbooktype=getSearchParam(request)
-	print reqmonth
+	#print reqmonth
 	if nvlcheck(reqmonth):
 		reqmonth=getCurrentMonth()
 
