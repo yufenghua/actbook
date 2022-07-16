@@ -10,7 +10,7 @@ from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 
 # Create your views here.
-from exportToexcel import *
+#from exportToexcel import *
 from .models import *
 from datetime import *
 from django.db.models import Sum
