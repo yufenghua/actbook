@@ -95,7 +95,7 @@ def getMonthList():
 	td=date.today()
 	monthbegin=date(td.year,td.month,1)
 	monthlist=[monthbegin.strftime('%Y%m')]
-	for x in xrange(1,10):
+	for x in range(1,10):
 		previous_month=monthbegin - timedelta(days=1)
 		monthlist.append(previous_month.strftime('%Y%m'))
 		monthbegin=date(previous_month.year,previous_month.month,1)
